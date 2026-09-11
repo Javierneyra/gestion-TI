@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cinco Fuerzas de Porter - Marketing y Ventas</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* CSS reset and base */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        background: #f1f5f9;
+        color: #334155;
+        min-height: 100vh;
+        padding: 50px 20px;
+        /* Premium dot pattern background */
+        background-image: radial-gradient(#cbd5e1 1.5px, transparent 1.5px);
+        background-size: 30px 30px;
+      }
+      .contenedor {
+        max-width: 1200px;
+        margin: auto;
+        position: relative;
+      }
+
+      /* Botón Volver */
+      .btn-volver {
+        position: absolute;
+        top: -20px;
+        left: 0;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        background: white;
+        color: #475569;
+        text-decoration: none;
+        font-weight: 600;
+        font-family: "Outfit", sans-serif;
+        font-size: 15px;
+        border-radius: 50px;
+        box-shadow:
+          0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 10;
+      }
+      .btn-volver:hover {
+        background: #f8fafc;
+        color: #0f172a;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Título */
+      .titulo {
+        text-align: center;
+        margin-bottom: 60px;
+        padding-top: 20px;
+      }
+      .titulo h1 {
+        font-family: "Outfit", sans-serif;
+        font-size: 38px;
+        font-weight: 800;
+        color: #0f172a;
+        letter-spacing: -0.5px;
+        margin-bottom: 16px;
+      }
+      .titulo p {
+        font-size: 17px;
+        color: #64748b;
+        font-weight: 500;
+      }
+
+      /* GRID MAPA - Responsive and clean layout */
+      .mapa {
+        display: grid;
+        grid-template-columns: 1fr minmax(320px, 420px) 1fr;
+        grid-template-areas:
+          ". nuevos ."
+          "proveedores rivalidad clientes"
+          ". centro ."
+          ". sustitutos .";
+        gap: 30px 25px;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Cajas de fuerzas */
+      .fuerza {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+        display: flex;
+        flex-direction: column;
+        overflow: visible; /* To allow arrows to show outside */
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        z-index: 2;
+        height: 100%;
+      }
+
+      /* Envoltura interna para esconder desbordes visuales pero no flechas */
+      .fuerza-inner {
+        border-radius: 16px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+
+      .fuerza:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        z-index: 10;
+      }
+
+      .encabezado {
+        padding: 16px 20px;
+        font-family: "Outfit", sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        text-align: center;
+        color: white;
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+      .encabezado svg {
+        width: 22px;
+        height: 22px;
+        flex-shrink: 0;
+      }
+
+      .contenido {
+        padding: 24px 22px;
+        font-size: 14.5px;
+        line-height: 1.6;
+        color: #475569;
+        flex-grow: 1;
+        background: white;
+      }
+      .contenido ul {
+        padding-left: 0;
+        list-style-type: none;
+      }
+      .contenido li {
+        margin-bottom: 12px;
+        position: relative;
+        padding-left: 20px;
+      }
+      .contenido li::before {
+        content: "•";
+        color: var(--color-fuerza, #94a3b8);
+        position: absolute;
+        left: 0;
+        font-weight: bold;
+        font-size: 18px;
+        line-height: 1.4;
+      }
+      .contenido li:last-child {
+        margin-bottom: 0;
+      }
+
+      /* Colores y Áreas */
+      .verde {
+        --color-fuerza: #10b981;
+        grid-area: nuevos;
+      }
+      .verde .encabezado {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      }
+
+      .azul {
+        --color-fuerza: #3b82f6;
+        grid-area: proveedores;
+      }
+      .azul .encabezado {
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      }
+
+      .gris {
+        --color-fuerza: #8b5cf6;
+        grid-area: clientes;
+      }
+      .gris .encabezado {
+        background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+      }
+
+      .naranja {
+        --color-fuerza: #f43f5e;
+        grid-area: rivalidad;
+      }
+      .naranja .encabezado {
+        background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+      }
+
+      .amarillo {
+        --color-fuerza: #f59e0b;
+        grid-area: sustitutos;
+      }
+      .amarillo .encabezado {
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      }
+
+      /* Centro - Contexto */
+      .centro {
+        grid-area: centro;
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        color: white;
+        border-radius: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 30px 20px;
+        box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.3);
+        transition: all 0.4s ease;
+        position: relative;
+        z-index: 2;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .centro:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 25px 30px -5px rgba(15, 23, 42, 0.4);
+        z-index: 10;
+      }
+      .centro small {
+        font-family: "Inter", sans-serif;
+        font-size: 12px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: #94a3b8;
+        margin-bottom: 8px;
+        font-weight: 600;
+      }
+      .centro h2 {
+        font-family: "Outfit", sans-serif;
+        font-size: 26px;
+        font-weight: 800;
+        text-align: center;
+        background: linear-gradient(to right, #ffffff, #cbd5e1);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      /* Conectores y Flechas (Solo para Desktop) */
+      @media (min-width: 991px) {
+        /* NUEVOS -> RIVALIDAD (Abajo) */
+        .nuevos::after {
+          content: "";
+          position: absolute;
+          bottom: -30px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 2px;
+          height: 30px;
+          background: #cbd5e1;
+        }
+        .nuevos::before {
+          content: "";
+          position: absolute;
+          bottom: -32px;
+          left: 50%;
+          transform: translateX(-50%);
+          border-left: 6px solid transparent;
+          border-right: 6px solid transparent;
+          border-top: 8px solid #cbd5e1;
+          z-index: 1;
+        }
+
+        /* PROVEEDORES -> RIVALIDAD (Derecha) */
+        .proveedores::after {
+          content: "";
+          position: absolute;
+          top: 50%;
+          right: -25px;
+          transform: translateY(-50%);
+          width: 25px;
+          height: 2px;
+          background: #cbd5e1;
+        }
+        .proveedores::before {
+          content: "";
+          position: absolute;
+          top: 50%;
+          right: -27px;
+          transform: translateY(-50%);
+          border-top: 6px solid transparent;
+          border-bottom: 6px solid transparent;
+          border-left: 8px solid #cbd5e1;
+          z-index: 1;
+        }
+
+        /* CLIENTES -> RIVALIDAD (Izquierda) */
+        .clientes::after {
+          content: "";
+          position: absolute;
+          top: 50%;
+          left: -25px;
+          transform: translateY(-50%);
+          width: 25px;
+          height: 2px;
+          background: #cbd5e1;
+        }
+        .clientes::before {
+          content: "";
+          position: absolute;
+          top: 50%;
+          left: -27px;
+          transform: translateY(-50%);
+          border-top: 6px solid transparent;
+          border-bottom: 6px solid transparent;
+          border-right: 8px solid #cbd5e1;
+          z-index: 1;
+        }
+
+        /* RIVALIDAD -> CENTRO (Abajo) */
+        .rivalidad::after {
+          content: "";
+          position: absolute;
+          bottom: -30px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 2px;
+          height: 30px;
+          background: #cbd5e1;
+        }
+        .rivalidad::before {
+          content: "";
+          position: absolute;
+          bottom: -32px;
+          left: 50%;
+          transform: translateX(-50%);
+          border-left: 6px solid transparent;
+          border-right: 6px solid transparent;
+          border-top: 8px solid #cbd5e1;
+          z-index: 1;
+        }
+
+        /* SUSTITUTOS -> CENTRO (Arriba) */
+        .sustitutos::after {
+          content: "";
+          position: absolute;
+          top: -30px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 2px;
+          height: 30px;
+          background: #cbd5e1;
+        }
+        .sustitutos::before {
+          content: "";
+          position: absolute;
+          top: -32px;
+          left: 50%;
+          transform: translateX(-50%);
+          border-left: 6px solid transparent;
+          border-right: 6px solid transparent;
+          border-bottom: 8px solid #cbd5e1;
+          z-index: 1;
+        }
+      }
+
+      /* Pie */
+      .pie {
+        text-align: center;
+        margin-top: 50px;
+        padding: 24px;
+        font-size: 15px;
+        color: #64748b;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      }
+      .pie strong {
+        color: #0f172a;
+        font-weight: 600;
+      }
+
+      /* Responsive Mobile Ajustes */
+      @media (max-width: 990px) {
+        .mapa {
+          grid-template-columns: 1fr;
+          grid-template-areas:
+            "nuevos"
+            "proveedores"
+            "clientes"
+            "rivalidad"
+            "centro"
+            "sustitutos";
+        }
+        .btn-volver {
+          position: relative;
+          top: 0;
+          margin-bottom: 20px;
+        }
+        .titulo {
+          margin-bottom: 30px;
+          padding-top: 0;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="contenedor">
+      <!-- Botón Volver -->
+      <a href="index.html" class="btn-volver">
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Volver al Mapa Principal
+      </a>
+
+      <!-- Título -->
+      <div class="titulo">
+        <h1>Análisis de las 5 Fuerzas de Porter</h1>
+        <p>
+          Análisis competitivo profundo del sector de servicios de Marketing
+          Digital y Ventas
+        </p>
+      </div>
+
+      <!-- MAPA GRID -->
+      <div class="mapa">
+        <!-- AMENAZA DE NUEVOS INGRESOS -->
+        <div class="fuerza nuevos verde">
+          <div class="fuerza-inner">
+            <div class="encabezado">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <line x1="19" y1="8" x2="19" y2="14"></line>
+                <line x1="22" y1="11" x2="16" y2="11"></line>
+              </svg>
+              AMENAZA DE NUEVOS ENTRANTES
+            </div>
+            <div class="contenido">
+              <ul>
+                <li>
+                  <strong>Baja barrera de entrada:</strong> Acceso masivo a IA
+                  generativa y plataformas no-code para crear agencias.
+                </li>
+                <li>
+                  <strong>Especialización:</strong> Proliferación de agencias
+                  boutique especializadas en nichos muy específicos.
+                </li>
+                <li>
+                  <strong>Trabajo freelance:</strong> Aumento de talento
+                  independiente ofreciendo servicios competitivos a menores
+                  costos.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- PODER DE NEGOCIACIÓN DE LOS PROVEEDORES -->
+        <div class="fuerza proveedores azul">
+          <div class="fuerza-inner">
+            <div class="encabezado">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+                ></path>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+              </svg>
+              PODER DE NEGOCIACIÓN DE PROVEEDORES
+            </div>
+            <div class="contenido">
+              <ul>
+                <li>
+                  <strong>Walled Gardens:</strong> Alta dependencia de Google,
+                  Meta y TikTok para dictar costos y alcance publicitario.
+                </li>
+                <li>
+                  <strong>SaaS Costosos:</strong> Dependencia de herramientas de
+                  CRM y analítica (HubSpot, Salesforce) con altos costos de
+                  licencia.
+                </li>
+                <li>
+                  <strong>Cambios de Privacidad:</strong> Proveedores de datos
+                  que limitan cookies y segmentación, afectando las campañas.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIVALIDAD ENTRE COMPETIDORES -->
+        <div class="fuerza rivalidad naranja">
+          <div class="fuerza-inner">
+            <div class="encabezado">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                <path d="M2 17l10 5 10-5"></path>
+                <path d="M2 12l10 5 10-5"></path>
+              </svg>
+              RIVALIDAD ENTRE COMPETIDORES
+            </div>
+            <div class="contenido">
+              <ul>
+                <li>
+                  <strong>Guerra de precios:</strong> Comoditización de
+                  servicios básicos como gestión de redes o SEO estándar.
+                </li>
+                <li>
+                  <strong>Diferenciación:</strong> Fuerte necesidad de ofrecer
+                  alto valor estratégico y tecnológico para destacar.
+                </li>
+                <li>
+                  <strong>Saturación:</strong> Mercado altamente saturado con
+                  constante lucha por captar la atención de las marcas.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- PODER DE NEGOCIACIÓN DE LOS CLIENTES -->
+        <div class="fuerza clientes gris">
+          <div class="fuerza-inner">
+            <div class="encabezado">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+              PODER DE NEGOCIACIÓN DE CLIENTES
+            </div>
+            <div class="contenido">
+              <ul>
+                <li>
+                  <strong>Exigencia de ROI:</strong> Demanda de resultados
+                  comerciales rápidos, medibles y demostrables a corto plazo.
+                </li>
+                <li>
+                  <strong>Bajo costo de cambio:</strong> Facilidad de las
+                  empresas para cambiar de agencia si no perciben valor
+                  inmediato.
+                </li>
+                <li>
+                  <strong>Transparencia:</strong> Expectativas de reportería en
+                  tiempo real y omnicanalidad absoluta.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- CENTRO -->
+        <div class="centro">
+          <small>Mercado Analizado</small>
+          <h2>MARKETING Y VENTAS</h2>
+        </div>
+
+        <!-- AMENAZA DE SUSTITUTOS -->
+        <div class="fuerza sustitutos amarillo">
+          <div class="fuerza-inner">
+            <div class="encabezado">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M21 2v6h-6"></path>
+                <path d="M3 12a9 9 0 0 1 15-6.7L21 8"></path>
+                <path d="M3 22v-6h6"></path>
+                <path d="M21 12A9 9 0 0 1 6 18.3L3 16"></path>
+              </svg>
+              AMENAZA DE SUSTITUTOS
+            </div>
+            <div class="contenido">
+              <ul>
+                <li>
+                  <strong>Equipos In-house:</strong> Empresas que internalizan
+                  el marketing capacitando a su propio talento interno.
+                </li>
+                <li>
+                  <strong>Plataformas Automatizadas:</strong> Herramientas IA
+                  que permiten a negocios gestionar sus pautas sin agencias.
+                </li>
+                <li>
+                  <strong>Marketing de Influencers:</strong> Marcas que delegan
+                  la venta y creación de contenido directamente a creadores.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Fin de Mapa -->
+
+      <!-- PIE -->
+      <div class="pie">
+        <strong>Caso de análisis práctico:</strong> MarketPro Digital — Empresa
+        de servicios de Marketing B2B y B2C
+      </div>
+    </div>
+  </body>
+</html>
